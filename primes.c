@@ -41,12 +41,14 @@ void recursion(int fds_lectura){
 				}
 			}
 			close(fds[1]); // Cerramos descriptor de escritura
+			close(fds_lectura);
 			wait(NULL); // Esperamos que nuestro hijo ("hermano" derecho) termine
 
 		// En el proceso hijo ("hermano" derecho), vamos a repetir lo que hicimos	
 		} else {
 
 			close(fds[1]); // Cerramos descriptor de escritura
+			close(fds_lectura);
 			recursion(fds[0]); // Llamamos a la recursion para seguir leyendo del pipe
 			exit(0); // Termina el proceso hijo
 
