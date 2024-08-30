@@ -43,20 +43,22 @@ recursion(int fds_lectura)
 					write(fds[1], &n, sizeof(int));
 				}
 			}
-			close(fds[1]);  // Cerramos descriptor de escritura
-			close(fds_lectura);
+			close(fds[1]);       // Cerramos descriptor de escritura
+			close(fds_lectura);  // Cerramos descriptor que recibe
+			                     // la funcion por parametro con los nros que nos envio el hijo izq
 			wait(NULL);  // Esperamos que nuestro hijo ("hermano" derecho) termine
 
 			// En el proceso hijo ("hermano" derecho), vamos a repetir lo que hicimos
 		} else {
-			close(fds[1]);  // Cerramos descriptor de escritura
-			close(fds_lectura);
-			recursion(fds[0]);  // Llamamos a la recursion para seguir leyendo del pipe
-			exit(0);  // Termina el proceso hijo
+			close(fds[1]);       // Cerramos descriptor de escritura
+			close(fds_lectura);  // Cerramos descriptor que recibe
+			                     // la funcion por parametro con los nros que nos envio el hijo izq
+			recursion(fds[0]);  // Llamamos a la recursion para seguir leyendo y filtrando
 		}
 		// Si ya la secuencia esta vacia
 	} else {
-		close(fds_lectura);  // Cerramos descriptor de lectura
+		close(fds_lectura);  // Cerramos descriptor que recibe la funcion
+		                     // por parametro con los nros que nos envio el hijo izq
 	}
 }
 
@@ -103,7 +105,6 @@ main(int argc, char *argv[])
 	} else {
 		close(fds[1]);      // Cerramos descriptor de escritura
 		recursion(fds[0]);  // Llamamos a la funcion recursiva
-		exit(0);            // Termina el proceso hijo
 	}
-	return 0;
+	exit(0);
 }
