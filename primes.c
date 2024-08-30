@@ -12,6 +12,7 @@ recursion(int fds_lectura)
 	if (read(fds_lectura, &p, sizeof(int)) > 0) {
 		printf("primo %d\n",
 		       p);  // Si hay numero, lo imprimimos ya que es primo
+		fflush(stdout);
 
 
 		pid_t pid;
@@ -21,6 +22,7 @@ recursion(int fds_lectura)
 		int r = pipe(fds);
 		if (r < 0) {
 			printf("Error al crear el pipe\n");
+			fflush(stdout);
 			exit(EXIT_FAILURE);
 		}
 
@@ -28,6 +30,7 @@ recursion(int fds_lectura)
 		pid = fork();
 		if (pid < 0) {
 			printf("Error en el fork %d\n", pid);
+			fflush(stdout);
 			exit(EXIT_FAILURE);
 		}
 
@@ -68,6 +71,7 @@ main(int argc, char *argv[])
 	// Chequeamos que el usuario ingrese solo 1 cosa
 	if (argc != 2) {
 		printf("Por favor usar bien la interfaz\n");
+		fflush(stdout);
 		exit(EXIT_FAILURE);
 	}
 	// La transformamos a entero
@@ -81,6 +85,7 @@ main(int argc, char *argv[])
 	int r = pipe(fds);
 	if (r < 0) {
 		printf("Error al crear el pipe\n");
+		fflush(stdout);
 		exit(EXIT_FAILURE);
 	}
 
@@ -88,6 +93,7 @@ main(int argc, char *argv[])
 	pid = fork();
 	if (pid < 0) {
 		printf("Error en el fork %d\n", pid);
+		fflush(stdout);
 		exit(EXIT_FAILURE);
 	}
 
